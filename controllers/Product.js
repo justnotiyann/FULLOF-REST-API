@@ -2,7 +2,7 @@ const Products = require("../models/Products");
 
 const getProducts = async (req, res) => {
   try {
-    const result = await Products.findAll({});
+      const result = await Products.findAll({});
     if (result <= 0) res.json({ msg: "Data belum tersedia" });
     res.json({ msg: "Berikut datanya", result });
   } catch (error) {
@@ -31,30 +31,19 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// const editProduct = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const getProduct = await Products.findOne({ where: { id: id } });
-//     if (getProduct <= 0) {
-//       res.status(404).json({ msg: "Data tidak ditemukan" });
-//     } else {
-//       await Products.update({ ...req.body, where: { id: id } });
-//       res.status(200).json({ msg: "Data berhasil diupdate" });
-//     }
-//   } catch (e) {
-//     console.log(e.message);
-//   }
-// };
-
 const editProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    const body = req.body;
-    const result = await Products.update({ ...body, where: { id: id } });
-    if (!result) req.json({ msg: "gagal tambah data" });
-    res.status(200).json({ msg: "Data berhasil diupdate" });
+    const getProduct = await Products.findOne({ where: { id: id } });
+    if (getProduct <= 0) {
+      res.status(404).json({ msg: "Data tidak ditemukan" });
+    } else {
+      await Products.update({ ...req.body }, { where: { id: id } });
+      res.status(200).json({ msg: "Data berhasil diupdate" });
+    }
   } catch (e) {
     console.log(e.message);
   }
 };
+
 module.exports = { getProducts, addProduct, deleteProduct, editProduct };
