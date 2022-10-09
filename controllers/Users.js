@@ -48,9 +48,16 @@ const updateUUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
-      const search = await Users.findOne({ where: { id: id } });
-      
-  } catch (e) {}
+    const search = await Users.findOne({ where: { id: id } });
+    if (!search) {
+      res.status(404).json({ msg: "Data tidak ditemukan" });
+    } else {
+      await Users.destroy({ where: { id: id } });
+      res.status(200).json({ msg: "Data berhasil dihapus" });
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
 };
 
-module.exports = { getUsers, addUser, updateUUser };
+module.exports = { getUsers, addUser, updateUUser, deleteUser };
