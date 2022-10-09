@@ -4,7 +4,7 @@ const argon2 = require("argon2");
 const getUsers = async (req, res) => {
   try {
     const result = await Users.findAll({
-      attributes: ["nama", "email", "image"],
+      attributes: ["id","nama", "email", "image"],
     });
     if (result <= 0) res.json({ msg: "Data belum ada" });
     res.status(200).json({ msg: "Berikut data Users", result });
