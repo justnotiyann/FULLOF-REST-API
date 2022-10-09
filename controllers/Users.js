@@ -16,7 +16,7 @@ const getUsers = async (req, res) => {
 const addUser = async (req, res) => {
   try {
     const hash = await argon2.hash(req.body.password);
-    const result = await Users.create({ ...req.body, password: hash });
+    const result = await Users.create({ ...req.body, password: hash, image: req.file.path });
     if (!result) res.json({ msg: "Gagal membuat data" });
     res.status(200).json({ msg: "berhasil membuat data" });
   } catch (e) {
